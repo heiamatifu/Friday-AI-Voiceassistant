@@ -1,18 +1,114 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Friday - Voice Assistant</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Friday - Your AI Assistant</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1e1e2f;
+      color: white;
+      text-align: center;
+      padding: 30px;
+    }
+    h1 {
+      color: #00ffff;
+    }
+    button {
+      background-color: #00ffff;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 10px;
+    }
+    .output {
+      margin-top: 30px;
+      font-size: 18px;
+    }
+  </style>
 </head>
 <body>
+  <h1>Friday - Your Voice AI Assistant</h1>
+  <p>Tap the button and speak your command</p>
+  <button onclick="startListening()">🎤 Talk to Friday</button>
+  <div class="output" id="outputText">I am Friday, ready to help!</div>  <script>
+    const output = document.getElementById("outputText");
+
+    const jokes = [
+      "Why don’t scientists trust atoms? Because they make up everything!",
+      "Why did the math book look sad? Because it had too many problems.",
+      "I told my computer I needed a break, and it said 'No problem — I’ll go to sleep.'",
+      // add up to 50 jokes
+    ];
+
+    const facts = [
+      "Honey never spoils. Archaeologists have found edible honey in ancient Egyptian tombs.",
+      "Octopuses have three hearts and blue blood.",
+      "Bananas are berries, but strawberries aren’t.",
+      // add up to 50 fun facts
+    ];
+
+    const stories = [
+      "Once upon a time, in a jungle, a clever rabbit outsmarted a lion...",
+      "There was a kind girl who always helped animals. One day, a bird granted her a wish...",
+      // add up to 50 kids stories
+    ];
+
+    const recipes = [
+      "To make Maggi: boil water, add noodles, taste maker, cook for 2 minutes.",
+      "To make Poha: soak flattened rice, fry onions and mustard seeds, add turmeric and salt, mix well.",
+      // add up to 40 popular Indian dishes
+    ];
+
+    function speak(text) {
+      const speech = new SpeechSynthesisUtterance();
+      speech.text = text;
+      speech.rate = 1;
+      speech.pitch = 1;
+      window.speechSynthesis.speak(speech);
+    }
+
+    function getResponse(input) {
+      input = input.toLowerCase();
+      if (input.includes("joke")) {
+        const joke = jokes[Math.floor(Math.random() * jokes.length)];
+        speak(joke);
+        output.innerText = joke;
+      } else if (input.includes("fact")) {
+        const fact = facts[Math.floor(Math.random() * facts.length)];
+        speak(fact);
+        output.innerText = fact;
+      } else if (input.includes("story")) {
+        const story = stories[Math.floor(Math.random() * stories.length)];
+        speak(story);
+        output.innerText = story;
+      } else if (input.includes("recipe") || input.includes("how to make")) {
+        const recipe = recipes[Math.floor(Math.random() * recipes.length)];
+        speak(recipe);
+        output.innerText = recipe;
+      } else {
+        const defaultReply = "I’m sorry, I don’t know that yet. But I’ll learn it soon!";
+        speak(defaultReply);
+        output.innerText = defaultReply;
+      }
+    }
+
+    function startListening() {
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = "en-US";
+      recognition.start();
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        output.innerText = "You said: " + transcript;
+        getResponse(transcript);
+      };
+    }
+  </script></body>
+</html>
   <div class="container">
-    <h1>🧠 Friday - AI Voice Assistant</h1>
-    <div class="output" id="output">Say "Hey Friday" to start...</div>
-    <button id="micButton">🎙️ Speak</button>
     <button id="creatorButton">📞 Meet My Creator</button>
   </div>
-  <script src="script.js"></script>
-</body>
-</html>
+  
